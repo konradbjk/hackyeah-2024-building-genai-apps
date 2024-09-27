@@ -1,0 +1,35 @@
+name: "hackyeah-2024"
+services:
+  langflow:
+    image: langflowai/langflow:1.0.18
+    container_name: hy_langflow
+    ports:
+      - "80:7860"
+    depends_on:
+      - postgres
+    env_file: ".env"
+    volumes:
+      - langflow-data:/app/langflow
+      - langflow-config:/app/config
+    networks:
+      - node-network
+
+  postgres:
+    image: postgres:16
+    container_name: hy_postgres
+    hostname: postgres
+    env_file: ".env"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - node-network
+
+volumes:
+  postgres-data:
+  langflow-data:
+  langflow-config:
+
+
+networks:
+  node-network:
+    driver: bridge
